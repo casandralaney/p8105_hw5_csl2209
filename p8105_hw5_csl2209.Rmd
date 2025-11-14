@@ -136,7 +136,7 @@ one_samp_sim_results |>
   geom_line() +
   labs(
     title = "Average Sample Mean vs True Mean",
-    x = "True Value of μ",
+    x = "True μ",
     y = "Average Estimated Mean"
   )
 ```
@@ -153,7 +153,7 @@ one_samp_sim_results |>
   geom_line() +
   labs(
     title = "Average Estimate in Rejected Null Simulations",
-    x = "True Value of μ",
+    x = "True μ",
     y = "Average Estimated Mean (Only When Null Rejected)"
   )
 ```
@@ -161,6 +161,64 @@ one_samp_sim_results |>
 
 ## Problem 3
 
-Describe the raw data
+```{r}
+homicide_data = read_csv("data/homicide-data.csv")
+```
 
-Use the prop.test function to estimate proportion of homicides
+
+The dataset 'homicide-data' contains 12 variables of criminal homicide data collected in 50 of the largest American cities. 
+
+Important variables include:
+
+* 'reported_date': the date the case was reported
+
+* 'victim_last': the last name of the victim
+
+* 'victim_first': the first name of the victim
+
+* 'victim_race': the race of the victim
+
+* 'victim_age': the age of the victim
+
+
+Summarize within cities to obtain the total number of homicides and the number of unsolved homicides
+
+```{r}
+city_homicides = 
+  homicide_data |>
+  mutate(
+    city_state = str_c(city, state, sep = ", ")) |>
+  group_by(city_state) |>
+  summarize(
+    total_homicides = n(),
+    unsolved_homicides = 
+      sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
+  ) 
+```
+
+Use the prop.test function to estimate proportion of homicides for Baltimore
+
+```{r}
+baltimore = 
+  city_homicides |>
+  filter(city_state == "Baltimore, MD")
+
+prop.test(
+  x = baltimore$unsolved_homicides,
+  n = baltimore$total_homicides
+) |> 
+  broom::tidy()
+```
+
+
+Run prop.test for each city
+```{r}
+
+
+```
+
+Create a plot
+```{r}
+
+```
+
