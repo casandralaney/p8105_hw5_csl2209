@@ -194,6 +194,8 @@ city_homicides =
     unsolved_homicides = 
       sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
   ) 
+
+city_homicides
 ```
 
 Use the prop.test function to estimate proportion of homicides for Baltimore
@@ -208,17 +210,40 @@ prop.test(
   n = baltimore$total_homicides
 ) |> 
   broom::tidy()
+
+baltimore
 ```
 
 
 Run prop.test for each city
 ```{r}
+city_prop_tests =
+  city_homicides |>
+  mutate(
+    prop_test = 
+      map2(unsolved_homicides, total_homicides, \(x, n) prop.test(x, n)
+    ),
+    tidied = map(prop_test, broom::tidy)
+  ) |>
+  select(city_state, tidied) |>
+  unnest(tidied)
 
 
 ```
 
-Create a plot
+Plot of estimates & CIs for each city
 ```{r}
+city_prop_tests |>
+  mutate(city_state = fct_reorder(city_state, estimate)) |>
+  ggplot(aes(x = city_state, y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +
+  coord_flip() +
+  labs(
+    title = "Proportion of Unsolved Homicides by City",
+    x = "City",
+    y = "Estimated Proportion (95% CI)"
+  )
 
 ```
 
