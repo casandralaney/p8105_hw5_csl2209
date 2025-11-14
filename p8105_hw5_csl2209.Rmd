@@ -74,6 +74,8 @@ bday_sim_results |>
 
 Comment on your results:
 
+As the number of birthdays tested expands, so does the probability of repetition.
+
 ## Problem 2
 
 Write the function
@@ -125,6 +127,7 @@ one_samp_sim_results |>
   )
 ```
 
+The association between effect size and power is a positive, as the true value of mu increases with the probability of the null being rejected.  
 
 Plot of avg estimate vs true value 
 ```{r}
@@ -158,6 +161,7 @@ one_samp_sim_results |>
   )
 ```
 
+The sample average of mu hat across tests for which the null is rejected is approximately equal to the true value of mu, as the two graphs above are very similar. Both show positive trends with similarly proportional increases between respective x and y variables.
 
 ## Problem 3
 
