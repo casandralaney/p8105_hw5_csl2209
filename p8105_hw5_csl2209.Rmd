@@ -5,7 +5,7 @@ date: "2025-11-14"
 output: github_document
 ---
 
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 
 knitr::opts_chunk$set(
@@ -27,6 +27,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Problem 1
 
+Make a function
 ```{r}
 bday_sim = function(n_room) {
   
@@ -37,9 +38,11 @@ bday_sim = function(n_room) {
   repeated_bday
 }
 
+```
 
+check it works 
+```{r}
 bday_sim(5)
-
 ```
 
 Run function 10000 times for each group size between 2 and 50
